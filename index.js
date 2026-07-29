@@ -37,37 +37,28 @@ bot.on('chat_join_request', async (req) => {
   }
 
   try {
-  // Welcome Message
-  await bot.sendMessage(
-    userId,
-    `🎉 Welcome to VIP Team! 💯
-
-🔗 Registration Link:
-https://www.ts777.online/#/register?invitationCode=324515976095
-
-📲 Register karke Deposit complete karo aur Deposit ka Screenshot isi chat me bhej do.
-
-✅ Screenshot verify hote hi aapko VIP Group me add kar diya jayega.
-
-📥 Official App niche se download kar lo.
-
-🚀 Best of Luck! ❤️`
-  );
-
   await Promise.all([
-    bot.sendDocument(userId, "./ITHESH VIP PANEL.apk", {
-      caption: "📲 Official App Download"
-    }),
-
-    bot.sendVoice(userId, "./gayatriaudio.ogg"),
-
     bot.sendMessage(
       userId,
-      "📸 Deposit complete hone ke baad Screenshot isi chat me bhej dein.\n\n👤 Support: @Miss_Gayatri"
-    )
+      `🎉 Welcome to VIP Team! 💯
+
+🔗 Register:
+https://www.ts777.online/#/register?invitationCode=324515976095
+
+📲 Register karo, Deposit karo aur Screenshot bhejo @Miss_Gayatri. 
+
+🚀 Screenshot verify hote hi aapko VIP Group me add kar diya jayega.`
+    ),
+
+    bot.sendDocument(userId, "./ITHESH VIP PANEL.apk", {
+      caption: "📲 Official App"
+    }),
+
+    bot.sendVoice(userId, "./gayatriaudio.ogg")
   ]);
 
   console.log(`DM sent to ${userId}`);
+
   } catch (dmError) {
     console.error(`DM FAILED for ${userId}: ${dmError.message}`);
     if (dmError.response && dmError.response.body) {

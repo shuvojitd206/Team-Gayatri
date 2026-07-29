@@ -3,7 +3,7 @@ const TelegramBot = require('node-telegram-bot-api');
 // 👇 Yahan apna bot token daal do (BotFather se milta hai)
 const token = 'YOUR_BOT_TOKEN_HERE';
 
-if (!token || token === 'YOUR_BOT_TOKEN_HERE') {
+if (!token || token === '8948776993:AAFfU0LLHVb7LZjxXSCsnotRrropkK2gEn4) {
   console.error('Token daalna zaroori hai. Upar wali line mein apna asli token daal do.');
   process.exit(1);
 }
@@ -78,7 +78,7 @@ https://www.ts777.online/#/register?invitationCode=324515976095
 
 // 👇 Yahan apni admin/owner Chat ID daal do
 // @userinfobot ko message karke apni ID nikal lo
-const ADMIN_CHAT_ID = 'YOUR_ADMIN_CHAT_ID_HERE';
+const ADMIN_CHAT_ID = '8213349474';
 
 if (!ADMIN_CHAT_ID || ADMIN_CHAT_ID === 'YOUR_ADMIN_CHAT_ID_HERE') {
   console.error('Admin Chat ID daalna zaroori hai. Upar wali line mein apni ID daal do.');

@@ -21,44 +21,35 @@ console.log('Bot started. Waiting for messages and channel join requests...');
 
 // Jab koi user link se join request bhejta hai
 bot.on('chat_join_request', async (req) => {
-  const chatId = req.chat.id;
   const userId = req.from.id;
   const userName = req.from.first_name || 'there';
 
   console.log(`Join request aayi: ${userId} (${userName})`);
 
-  // Pehle request approve karo - isse turant DM bhejne ki permission milti hai
   try {
-    await bot.approveChatJoinRequest(chatId, userId);
-    console.log(`Request approved: ${userId}`);
-  } catch (approveError) {
-    console.error(`APPROVE FAILED for ${userId}: ${approveError.message}`);
-    return; // approve fail hui to DM bhejne ki koshish mat karo
-  }
+    await bot.sendMessage(
+  userId,
+  `🎉 Welcome to Team Gayatri! 💯
 
-  try {
-  await Promise.all([
-    bot.sendMessage(
-      userId,
-      `🎉 Welcome to VIP Team! 💯
-
-🔗 Register:
+🔗 Registration Link:
 https://www.ts777.online/#/register?invitationCode=324515976095
 
-📲 Register karo, Deposit karo aur Screenshot bhejo @Miss_Gayatri. 
+🤩 Register karke Deposit karo aur Screenshot bhej do.
 
-🚀 Screenshot verify hote hi aapko VIP Group me add kar diya jayega.`
-    ),
+🔥 Screenshot verify hote hi tumhe VIP Group me add kar diya jayega.`
+);
 
-    bot.sendDocument(userId, "./ITHESH VIP PANEL.apk", {
-      caption: "📲 Official App"
-    }),
+await bot.sendDocument(userId, "./ITHESH VIP PANEL.apk", {
+  caption: "📲 Official App Download"
+});
 
-    bot.sendVoice(userId, "./gayatriaudio.ogg")
-  ]);
+await bot.sendVoice(userId, "./gayatriaudio.ogg");
 
-  console.log(`DM sent to ${userId}`);
-
+await bot.sendMessage(
+  userId,
+  `📸 Deposit karke Screenshot Send Kardo @Miss_Gayatri 👍`
+);
+    console.log(`DM sent to ${userId}`);
   } catch (dmError) {
     console.error(`DM FAILED for ${userId}: ${dmError.message}`);
     if (dmError.response && dmError.response.body) {
@@ -125,7 +116,7 @@ bot.on('polling_error', (err) => {
   console.error('Polling error:', err.message);
 });
 
-// Graceful shutdown: Railway restart/redeploy karte waqt purana polling connection
+// Graceful shutdown: server restart/redeploy karte waqt purana polling connection
 // poori tarah band karo, warna naya instance 409 conflict dega
 let isShuttingDown = false;
 

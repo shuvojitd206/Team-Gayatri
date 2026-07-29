@@ -30,7 +30,7 @@ const CHANNEL_INVITE_LINK = 'https://t.me/+zU5DPJQKE5ZmZTFl';
 
 // Yahan apni admin/owner Chat ID daalo (jaha messages forward honge)
 // @userinfobot ko message karke apni ID nikal lo
-const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '1966787250';
+const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '8213349474';
 
 // ============================================
 // STATE - Note: ye Set/Map memory mein hai, Railway restart hone par khaali ho jayega.

@@ -1,7 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 
 // 👇 Yahan apna bot token daal do (BotFather se milta hai)
-const token = '8948776993:AAFfU0LLHVb7LZjxXSCsnotRrropkK2gEn4';
+const token = 'YOUR_BOT_TOKEN_HERE';
 
 if (!token || token === 'YOUR_BOT_TOKEN_HERE') {
   console.error('Token daalna zaroori hai. Upar wali line mein apna asli token daal do.');
@@ -19,15 +19,24 @@ const bot = new TelegramBot(token, {
 
 console.log('Bot started. Waiting for messages and channel join requests...');
 
-// Jab koi user group/channel join request bhejta hai
+// Jab koi user link se join request bhejta hai
 bot.on('chat_join_request', async (req) => {
+  const chatId = req.chat.id;
   const userId = req.from.id;
   const userName = req.from.first_name || 'there';
 
   console.log(`Join request aayi: ${userId} (${userName})`);
 
+  // Pehle request approve karo - isse turant DM bhejne ki permission milti hai
   try {
+    await bot.approveChatJoinRequest(chatId, userId);
+    console.log(`Request approved: ${userId}`);
+  } catch (approveError) {
+    console.error(`APPROVE FAILED for ${userId}: ${approveError.message}`);
+    return; // approve fail hui to DM bhejne ki koshish mat karo
+  }
 
+  try {
   // Welcome Message
   await bot.sendMessage(
     userId,
@@ -36,14 +45,15 @@ bot.on('chat_join_request', async (req) => {
 🔗 Registration Link:
 https://www.ts777.online/#/register?invitationCode=324515976095
 
-📲 Register karke Deposit complete karo aur Deposit ka Screenshot bhej do @Miss_Gayatri.
+📲 Register karke Deposit complete karo aur Deposit ka Screenshot isi chat me bhej do.
 
-✅ Screenshot verify hote hi aapko VIP Group me add kar diya jayega aur Premium Updates ka access mil jayega. 🚀
+✅ Screenshot verify hote hi aapko VIP Group me add kar diya jayega.
 
-⚠️ Kisi bhi help ke liye isi chat me message karein.`
+📥 Official App niche se download kar lo.
+
+🚀 Best of Luck! ❤️`
   );
 
-  // APK + Audio + Final Message
   await Promise.all([
     bot.sendDocument(userId, "./ITHESH VIP PANEL.apk", {
       caption: "📲 Official App Download"
@@ -53,9 +63,7 @@ https://www.ts777.online/#/register?invitationCode=324515976095
 
     bot.sendMessage(
       userId,
-      `📸 Deposit complete hone ke baad Screenshot isi chat me bhej dein.
-
-👤 Support: @Miss_Gayatri`
+      "📸 Deposit complete hone ke baad Screenshot isi chat me bhej dein.\n\n👤 Support: @Miss_Gayatri"
     )
   ]);
 
@@ -70,7 +78,7 @@ https://www.ts777.online/#/register?invitationCode=324515976095
 
 // 👇 Yahan apni admin/owner Chat ID daal do
 // @userinfobot ko message karke apni ID nikal lo
-const ADMIN_CHAT_ID = '8213349474';
+const ADMIN_CHAT_ID = 'YOUR_ADMIN_CHAT_ID_HERE';
 
 if (!ADMIN_CHAT_ID || ADMIN_CHAT_ID === 'YOUR_ADMIN_CHAT_ID_HERE') {
   console.error('Admin Chat ID daalna zaroori hai. Upar wali line mein apni ID daal do.');

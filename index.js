@@ -1,7 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 
 // Token env variable se lo, ya seedha yahan daal do (sirf testing ke liye)
-const token = process.env.BOT_TOKEN || '8901568527:AAFpDI9WmRRI31xuWgpVyhhqJOQ9BN2Fmrs';
+const token = process.env.BOT_TOKEN || '8948776993:AAFZnP2Hr52tZzB7VY9HStp-YiB2TF5ra7w';
 
 if (!token || token === 'YOUR BOT TOKEN') {
   console.error('BOT_TOKEN set nahi hai. Env variable set karo ya upar wali line mein token daalo.');
@@ -61,7 +61,7 @@ https://www.ts777.online/#/register?invitationCode=324515976095
 
 // Yahan apni admin/owner Chat ID daalo (jaha messages forward honge)
 // @userinfobot ko message karke apni ID nikal lo
-const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '1966787250';
+const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '8213349474';
 
 // User -> Admin message ka mapping, taaki admin ke reply ko sahi user tak bhej sakein
 // Key: admin ke paas forward hue message ka ID, Value: original user ki chat ID

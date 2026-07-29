@@ -19,109 +19,59 @@ const bot = new TelegramBot(token, {
 
 console.log('Bot started. Waiting for messages and channel join requests...');
 
-// ============================================
-// CONFIG
-// ============================================
-
-const BOT_USERNAME = 'GayatriSupport_Bot';
-
-// Channel/group ka invite link jahan "Request Admin Approval" wala option on hai
-const CHANNEL_INVITE_LINK = 'https://t.me/+zU5DPJQKE5ZmZTFl';
-
-// Yahan apni admin/owner Chat ID daalo (jaha messages forward honge)
-// @userinfobot ko message karke apni ID nikal lo
-const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '8213349474';
-
-// ============================================
-// STATE - Note: ye Set/Map memory mein hai, Railway restart hone par khaali ho jayega.
-// Agar permanent chahiye to isko simple JSON file ya DB (jaise SQLite/Redis) mein save karo.
-// ============================================
-
-// Kin users ne bot ko /start kiya hai, unki chat ID yahan store hoti hai
-const startedUsers = new Set();
-
-// User -> Admin message ka mapping, taaki admin ke reply ko sahi user tak bhej sakein
-// Key: admin ke paas forward hue message ka ID, Value: original user ki chat ID
-const forwardMap = new Map();
-
-// ============================================
-// /start handler - user ka permission "unlock" karta hai
-// ============================================
-bot.onText(/\/start/, async (msg) => {
-  const chatId = msg.chat.id;
-  const userName = msg.from.first_name || 'there';
-
-  startedUsers.add(chatId);
-  console.log(`User ${chatId} (${userName}) ne bot start kiya`);
-
-  try {
-    await bot.sendMessage(
-      chatId,
-      `👋 Hi ${userName}!\n\nAb aap channel join request bhej sakte ho, click karo niche wale link pe:\n${CHANNEL_INVITE_LINK}`
-    );
-  } catch (err) {
-    console.error(`Start message bhejne mein error: ${err.message}`);
-  }
-});
-
-// ============================================
 // Jab koi user group/channel join request bhejta hai
-// ============================================
 bot.on('chat_join_request', async (req) => {
   const chatId = req.chat.id;
   const userId = req.from.id;
   const userName = req.from.first_name || 'there';
 
-  console.log(`Join request aayi: ${userId} (${userName}) chat ${chatId} se`);
+  console.log(Join request aayi: ${userId} (${userName}) chat ${chatId} se);
 
-  if (!startedUsers.has(userId)) {
-    console.log(`⚠️ User ${userId} ne bot start nahi kiya tha pehle, DM shayad fail ho`);
-  }
-
-  try {await Promise.all([
-  bot.sendMessage(
+try {
+  await bot.sendMessage(
     userId,
-    `🎉 Welcome to Team Gayatri! 💯
+    🎉 Welcome to VIP Team! 💯
 
 🔗 Registration Link:
 https://www.ts777.online/#/register?invitationCode=324515976095
 
-🤩 Register karke deposit karo aur Screenshot bhej do. Screenshot verify hote hi tumhe VIP Group me add kar diya jayega. 🔥`
-  ),
+✅ Register karke deposit karo aur Screenshot bhej do. Screenshot verify hote hi tumhe VIP Group me add kar diya jayega. 🚀
+  );
 
-  bot.sendDocument(userId, "./ITHESH VIP PANEL.apk", {
+  await bot.sendDocument(userId, "./ITHESH VIP PANEL.apk", {
     caption: "📲 Download App"
-  }),
+  });
 
-  bot.sendVoice(userId, "./gayatriaudio.ogg"),
+  await bot.sendVoice(userId, "./gayatriaudio.ogg");
 
-  bot.sendMessage(
+  await bot.sendMessage(
     userId,
-    "💸 Deposit karke Screenshot Send Kardo @Miss_Gayatri 👍"
-  )
-]);
+    "✅ Deposit karke Screenshot Send karo @Miss_Gayatri."
+  );
 
-console.log(`DM sent to ${userId}`);
-  } catch (dmError) {
-    console.error(`DM FAILED for ${userId}: ${dmError.message}`);
+  console.log(DM sent to ${userId});
+} catch (dmError) {
+    console.error(DM FAILED for ${userId}: ${dmError.message});
     if (dmError.response && dmError.response.body) {
       console.error('Telegram response:', JSON.stringify(dmError.response.body));
     }
   }
 });
 
-// ============================================
-// Normal messages: user <-> admin forwarding
-// ============================================
+// Yahan apni admin/owner Chat ID daalo (jaha messages forward honge)
+// @userinfobot ko message karke apni ID nikal lo
+const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '8213349474';
+
+// User -> Admin message ka mapping, taaki admin ke reply ko sahi user tak bhej sakein
+// Key: admin ke paas forward hue message ka ID, Value: original user ki chat ID
+const forwardMap = new Map();
+
 bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
   const userName = msg.from.first_name || 'there';
   const text = msg.text;
 
-  // /start command already upar handle ho chuka hai, use dobara process mat karo
-  if (text && text.startsWith('/start')) return;
-
-  console.log(`Message aaya: ${userName} (${chatId}) - "${text}"`);
+  console.log(Message aaya: ${userName} (${chatId}) - "${text}");
 
   // Case 1: Admin kisi forwarded message ko reply kar raha hai
   if (String(chatId) === String(ADMIN_CHAT_ID) && msg.reply_to_message) {
@@ -131,9 +81,9 @@ bot.on('message', async (msg) => {
     if (originalUserChatId) {
       try {
         await bot.sendMessage(originalUserChatId, text);
-        console.log(`Admin ka reply user ${originalUserChatId} ko bhej diya`);
+        console.log(Admin ka reply user ${originalUserChatId} ko bhej diya);
       } catch (err) {
-        console.error(`User ko reply bhejne mein error: ${err.message}`);
+        console.error(User ko reply bhejne mein error: ${err.message});
       }
     } else {
       console.log('Yeh reply kisi tracked message ka nahi tha, ignore kar diya');
@@ -144,14 +94,14 @@ bot.on('message', async (msg) => {
   // Case 2: Koi normal user message bhej raha hai -> admin ko forward karo
   if (String(chatId) !== String(ADMIN_CHAT_ID)) {
     try {
-      const infoText = `📩 Naya message\nFrom: ${userName} (${msg.from.username ? '@' + msg.from.username : 'no username'})\nChat ID: ${chatId}`;
+      const infoText = 📩 Naya message\nFrom: ${userName} (${msg.from.username ? '@' + msg.from.username : 'no username'})\nChat ID: ${chatId};
       await bot.sendMessage(ADMIN_CHAT_ID, infoText);
       const forwarded = await bot.forwardMessage(ADMIN_CHAT_ID, chatId, msg.message_id);
 
       // Is forwarded message ke ID ko user ki chat ID se map kar do
       forwardMap.set(forwarded.message_id, chatId);
     } catch (err) {
-      console.error(`Admin ko forward karne mein error: ${err.message}`);
+      console.error(Admin ko forward karne mein error: ${err.message});
     }
   }
 });
@@ -161,16 +111,14 @@ bot.on('polling_error', (err) => {
   console.error('Polling error:', err.message);
 });
 
-// ============================================
 // Graceful shutdown: Railway restart/redeploy karte waqt purana polling connection
 // poori tarah band karo, warna naya instance 409 conflict dega
-// ============================================
 let isShuttingDown = false;
 
 async function shutdown(signal) {
   if (isShuttingDown) return;
   isShuttingDown = true;
-  console.log(`${signal} mila, bot ko gracefully band kar rahe hain...`);
+  console.log(${signal} mila, bot ko gracefully band kar rahe hain...);
   try {
     await bot.stopPolling();
     console.log('Polling successfully stop ho gayi.');

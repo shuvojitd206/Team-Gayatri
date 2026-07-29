@@ -1,7 +1,7 @@
 {
-  "name": "telegram-join-bot",
+  "name": "telegram-join-request-bot",
   "version": "1.0.0",
-  "description": "Approves channel/group join requests and sends a welcome DM with group fallback",
+  "description": "Telegram bot for handling channel join requests and forwarding messages to admin",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"

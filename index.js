@@ -19,7 +19,54 @@ const bot = new TelegramBot(token, {
 
 console.log('Bot started. Waiting for messages and channel join requests...');
 
+// ============================================
+// CONFIG
+// ============================================
+
+const BOT_USERNAME = 'GayatriSupport_Bot';
+
+// Channel/group ka invite link jahan "Request Admin Approval" wala option on hai
+const CHANNEL_INVITE_LINK = 'https://t.me/+zU5DPJQKE5ZmZTFl';
+
+// Yahan apni admin/owner Chat ID daalo (jaha messages forward honge)
+// @userinfobot ko message karke apni ID nikal lo
+const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '1966787250';
+
+// ============================================
+// STATE - Note: ye Set/Map memory mein hai, Railway restart hone par khaali ho jayega.
+// Agar permanent chahiye to isko simple JSON file ya DB (jaise SQLite/Redis) mein save karo.
+// ============================================
+
+// Kin users ne bot ko /start kiya hai, unki chat ID yahan store hoti hai
+const startedUsers = new Set();
+
+// User -> Admin message ka mapping, taaki admin ke reply ko sahi user tak bhej sakein
+// Key: admin ke paas forward hue message ka ID, Value: original user ki chat ID
+const forwardMap = new Map();
+
+// ============================================
+// /start handler - user ka permission "unlock" karta hai
+// ============================================
+bot.onText(/\/start/, async (msg) => {
+  const chatId = msg.chat.id;
+  const userName = msg.from.first_name || 'there';
+
+  startedUsers.add(chatId);
+  console.log(`User ${chatId} (${userName}) ne bot start kiya`);
+
+  try {
+    await bot.sendMessage(
+      chatId,
+      `👋 Hi ${userName}!\n\nAb aap channel join request bhej sakte ho, click karo niche wale link pe:\n${CHANNEL_INVITE_LINK}`
+    );
+  } catch (err) {
+    console.error(`Start message bhejne mein error: ${err.message}`);
+  }
+});
+
+// ============================================
 // Jab koi user group/channel join request bhejta hai
+// ============================================
 bot.on('chat_join_request', async (req) => {
   const chatId = req.chat.id;
   const userId = req.from.id;
@@ -27,8 +74,11 @@ bot.on('chat_join_request', async (req) => {
 
   console.log(`Join request aayi: ${userId} (${userName}) chat ${chatId} se`);
 
-try {
-  await Promise.all([
+  if (!startedUsers.has(userId)) {
+    console.log(`⚠️ User ${userId} ne bot start nahi kiya tha pehle, DM shayad fail ho`);
+  }
+
+  try {await Promise.all([
   bot.sendMessage(
     userId,
     `🎉 Welcome to Team Gayatri! 💯
@@ -50,8 +100,9 @@ https://www.ts777.online/#/register?invitationCode=324515976095
     "💸 Deposit karke Screenshot Send Kardo @Miss_Gayatri 👍"
   )
 ]);
-  console.log(`DM sent to ${userId}`);
-} catch (dmError) {
+
+console.log(`DM sent to ${userId}`);
+  } catch (dmError) {
     console.error(`DM FAILED for ${userId}: ${dmError.message}`);
     if (dmError.response && dmError.response.body) {
       console.error('Telegram response:', JSON.stringify(dmError.response.body));
@@ -59,18 +110,16 @@ https://www.ts777.online/#/register?invitationCode=324515976095
   }
 });
 
-// Yahan apni admin/owner Chat ID daalo (jaha messages forward honge)
-// @userinfobot ko message karke apni ID nikal lo
-const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '8213349474';
-
-// User -> Admin message ka mapping, taaki admin ke reply ko sahi user tak bhej sakein
-// Key: admin ke paas forward hue message ka ID, Value: original user ki chat ID
-const forwardMap = new Map();
-
+// ============================================
+// Normal messages: user <-> admin forwarding
+// ============================================
 bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
   const userName = msg.from.first_name || 'there';
   const text = msg.text;
+
+  // /start command already upar handle ho chuka hai, use dobara process mat karo
+  if (text && text.startsWith('/start')) return;
 
   console.log(`Message aaya: ${userName} (${chatId}) - "${text}"`);
 
@@ -112,8 +161,10 @@ bot.on('polling_error', (err) => {
   console.error('Polling error:', err.message);
 });
 
+// ============================================
 // Graceful shutdown: Railway restart/redeploy karte waqt purana polling connection
 // poori tarah band karo, warna naya instance 409 conflict dega
+// ============================================
 let isShuttingDown = false;
 
 async function shutdown(signal) {

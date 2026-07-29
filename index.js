@@ -1,7 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 
 // Token env variable se lo, ya seedha yahan daal do (sirf testing ke liye)
-const token = process.env.BOT_TOKEN || 'BOT_TOKEN';
+const token = process.env.BOT_TOKEN || '8948776993:AAFZnP2Hr52tZzB7VY9HStp-YiB2TF5ra7w';
 
 if (!token || token === 'YOUR BOT TOKEN') {
   console.error('BOT_TOKEN set nahi hai. Env variable set karo ya upar wali line mein token daalo.');

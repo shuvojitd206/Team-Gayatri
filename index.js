@@ -1,9 +1,9 @@
 const TelegramBot = require('node-telegram-bot-api');
 
 // 👇 Yahan apna bot token daal do (BotFather se milta hai)
-const token = 'YOUR_BOT_TOKEN_HERE';
+const token = '8948776993:AAFfU0LLHVb7LZjxXSCsnotRrropkK2gEn4';
 
-if (!token || token === '8948776993:AAFfU0LLHVb7LZjxXSCsnotRrropkK2gEn4) {
+if (!token || token === 'YOUR_BOT_TOKEN_HERE') {
   console.error('Token daalna zaroori hai. Upar wali line mein apna asli token daal do.');
   process.exit(1);
 }

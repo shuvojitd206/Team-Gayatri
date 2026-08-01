@@ -32,7 +32,7 @@ bot.on('chat_join_request', async (req) => {
   `🎉 Welcome to Team Gayatri! 💯
 
 🔗 Registration Link:
-https://www.ts777.online/#/register?invitationCode=324515976095
+https://www.tswgg.site/#/register?invitationCode=324515976095
 
 🤩 Register karke Deposit karo aur Screenshot bhej do.
 
@@ -47,7 +47,7 @@ await bot.sendVoice(userId, "./gayatriaudio.ogg");
 
 await bot.sendMessage(
   userId,
-  `📸 Deposit karke Screenshot Send Kardo @Miss_Gayatri 👍`
+  `📸 Deposit karke Screenshot Send Kardo @MRBEAN_PREDICTOR 👍`
 );
     console.log(`DM sent to ${userId}`);
   } catch (dmError) {

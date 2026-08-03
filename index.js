@@ -29,25 +29,24 @@ bot.on('chat_join_request', async (req) => {
   try {
     await bot.sendMessage(
   userId,
-  `🎉 Welcome to Team Gayatri! 💯
+  `🎉 WELCOME TO TEAM GAYATRI 💯
 
-🔗 Registration Link:
-https://www.tswgg.site/#/register?invitationCode=324515976095
+🔗 Register: https://www.tswgg.site/#/register?invitationCode=324515976095
 
-🤩 Register karke Deposit karo aur Screenshot bhej do.
+💸 Register karke Deposit karo, phir Screenshot bhej do.
 
-🔥 Screenshot verify hote hi tumhe VIP Group me add kar diya jayega.`
+👑 VIP GROUP: https://t.me/+0cMikEPZ5Z44NTZl`
 );
 
 await bot.sendDocument(userId, "./ITHESH VIP PANEL.apk", {
-  caption: "📲 Official App Download"
+  caption: "💀 HACK FILE KO JALDI DOWNLOAD KARLO 💀"
 });
 
 await bot.sendVoice(userId, "./gayatriaudio.ogg");
 
 await bot.sendMessage(
   userId,
-  `📸 Deposit karke Screenshot Send Kardo @MRBEAN_PREDICTOR 👍`
+  `🔥 VIP CHANNEL PAR ADD HONA HAI TO DM KARO FAST : @MRBEAN_PREDICTOR 👍`
 );
     console.log(`DM sent to ${userId}`);
   } catch (dmError) {

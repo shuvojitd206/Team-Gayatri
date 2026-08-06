@@ -27,7 +27,7 @@ bot.on('chat_join_request', async (req) => {
   console.log(`Join request aayi: ${userId} (${userName})`);
 
   try {
-    await bot.sendMessage(
+    aw.ait bot.sendMessage(
   userId,
   `🎉 WELCOME TO TEAM GAYATRI 💯
 
